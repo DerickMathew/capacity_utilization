@@ -1,0 +1,19 @@
+{
+  "name": "capacity_utilization",
+  "version": "1.0.0",
+  "description": "capacity utilization visualization app",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/vinaymor002/capacity_utilization.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vinaymor002/capacity_utilization/issues"
+  },
+  "homepage": "https://github.com/vinaymor002/capacity_utilization#readme"
+}
