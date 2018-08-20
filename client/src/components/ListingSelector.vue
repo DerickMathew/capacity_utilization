@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-select v-model="selectedListing" filterable placeholder="Select Listing"
-                   @change="onListingChange">
+                   @change="onExperienceChange">
             <el-option v-for="experience in listings" :key="experience.value" :label="experience.label"
                        :value="experience.value">
             </el-option>
@@ -14,7 +14,7 @@
 
   export default {
     name: 'ListingSelector',
-    props: ['onListingChange'],
+    props: ['onExperienceChange'],
 
     data() {
       return {

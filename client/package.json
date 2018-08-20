@@ -15,7 +15,13 @@
   "dependencies": {
     "axios": "^0.18.0",
     "element-ui": "^2.4.6",
+    "highcharts": "^6.1.1",
+    "highcharts-vue": "^1.0.4",
+    "moment": "^2.22.2",
+    "moment-range": "^4.0.1",
     "vue": "^2.5.2",
+    "vue-moment": "^4.0.0",
+    "vue-momentjs": "^0.1.2",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
