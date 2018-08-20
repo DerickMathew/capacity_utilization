@@ -23,6 +23,12 @@
       }
     },
 
+    watch: {
+      selectedListing: function() {
+        this.onExperienceChange(this.selectedListing)
+      }
+    },
+
     created: function() {
       let self = this;
       let sellerId = '55c2b026ad2171f0438b45e7';

@@ -1,5 +1,5 @@
 <template>
-    <highcharts class="chart" :options="options"></highcharts>
+    <highcharts class="chart" :options="options" :updateArgs=[true]></highcharts>
 </template>
 
 <script>
@@ -14,17 +14,19 @@
       }
     },
 
-    created: function() {
-      this.getChartOptions();
-    },
-
     watch: {
       capacities: function() {
-        this.getChartOptions();
+        this.redraw();
       }
     },
 
     methods: {
+      redraw() {
+        this.options.xAxis.categories = this.getXAxisCategories();
+        this.options.yAxis.categories = this.getYAxisCategories();
+        this.options.series[0].data = this.getSeriesData();
+      },
+
       getSlots: function() {
         let capacities = this.capacities;
         let slots = new Set();
