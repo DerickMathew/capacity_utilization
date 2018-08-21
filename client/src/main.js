@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import {Button, Select, Option, DatePicker} from 'element-ui';
+import {Button, Select, Option, DatePicker, Radio, RadioGroup} from 'element-ui';
 import HighchartsVue from 'highcharts-vue'
 import Highcharts from 'highcharts'
 import Moment from "moment";
@@ -28,6 +28,8 @@ Vue.config.productionTip = false;
 Vue.component(Button.name, Button);
 Vue.component(Option.name, Option);
 Vue.component(Select.name, Select);
+Vue.component(Radio.name, Radio);
+Vue.component(RadioGroup.name, RadioGroup);
 Vue.component(DatePicker.name, DatePicker);
 
 Vue.use(HighchartsVue);

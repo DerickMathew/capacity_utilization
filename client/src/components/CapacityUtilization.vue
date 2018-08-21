@@ -10,30 +10,40 @@
         </div>
 
         <div class="body">
-            <capacity-heat-map v-if="capacities" :capacities="capacities" :dateRange="dateRange"
-                               :experienceId="selectedListing"></capacity-heat-map>
+            <div class="report-selector">
+                <el-radio-group v-model="reportType">
+                    <el-radio :label="1">Detailed report</el-radio>
+                    <el-radio :label="2">Summarised report</el-radio>
+                </el-radio-group>
+            </div>
 
-            <capacity-table v-if="capacities" :capacities="capacities" :dateRange="dateRange"
-                            :experienceId="selectedListing"></capacity-table>
+            <div>
+                <detailed-report v-show="reportType == 1" :capacities="capacities" :dateRange="dateRange"
+                                 :experienceId="selectedListing"></detailed-report>
+
+                <summarised-report v-show="reportType == 2" :capacities="capacities" :dateRange="dateRange"
+                                   :experienceId="selectedListing"></summarised-report>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
   import ListingSelector from './ListingSelector'
-  import CapacityHeatMap from "./CapacityHeatMap";
-  import CapacityTable from "./CapacityTable";
+  import DetailedReport from "./detailed/DetailedReport";
+  import SummarisedReport from "./summarised/SummarisedReport";
   import {HTTP} from '../http-common';
 
   export default {
     name: "CapacityUtilization",
-    components: {CapacityHeatMap, ListingSelector, CapacityTable},
+    components: {DetailedReport, SummarisedReport, ListingSelector},
 
     data() {
       return {
         dateRange: undefined,
         selectedListing: undefined,
-        capacities: undefined
+        capacities: undefined,
+        reportType: 1
       }
     },
 
@@ -88,5 +98,9 @@
 
     .el-date-editor {
         margin-left: 10px;
+    }
+
+    .el-radio__label {
+        font-size: 18px;
     }
 </style>

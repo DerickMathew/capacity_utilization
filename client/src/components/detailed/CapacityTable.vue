@@ -66,23 +66,24 @@
           for (let slotTime in slotsCapacity) {
             let capacity = slotsCapacity[slotTime].capacity;
             let booked = capacity - slotsCapacity[slotTime].open;
-            let capacityUtilization = 100;
+            let capacityUtilization;
 
             if (capacity !== 0) {
               capacityUtilization = parseFloat((booked / capacity * 100).toFixed(0));
+            } else {
+              capacityUtilization = 'N/A'
             }
 
-            data.push([date, slotTime, capacity, booked, capacityUtilization])
+            data.push([date, slotTime, capacity, booked, capacityUtilization]);
           }
         }
-        console.log(data);
-        return data
+        return data;
       }
     }
   }
 </script>
 
-<style src="../../node_modules/handsontable-pro/dist/handsontable.full.css"></style>
+<style src="../../../node_modules/handsontable-pro/dist/handsontable.full.css"></style>
 <style>
     #hot-display-license-info {
         display: none;
