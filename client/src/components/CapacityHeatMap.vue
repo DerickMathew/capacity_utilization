@@ -1,5 +1,14 @@
 <template>
-    <highcharts class="chart" :options="options" :updateArgs=[true]></highcharts>
+    <div>
+        <svg style="height: 0">
+            <defs>
+                <pattern id="hash4_4" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <rect width="8" height="8" transform="translate(7,0)" fill="black"></rect>
+                </pattern>
+            </defs>
+        </svg>
+        <highcharts class="chart" :options="options" :updateArgs=[true]></highcharts>
+    </div>
 </template>
 
 <script>
@@ -51,13 +60,21 @@
           let dateIndex = dates.indexOf(this.$moment(date).format('MMM DD'));
 
           for (let slotTime in slotsCapacity) {
-            let open = slotsCapacity[slotTime].open;
-            let capacity = slotsCapacity[slotTime].capacity;
-            let start = this.$moment(date + ('0000' + slotTime).slice(-4), 'YYYY-MM-DDHHmm');
+            let className = '';
+            let occupiedPercentage = undefined;
 
-            let occupiedPercentage = parseFloat(((capacity - open) / capacity * 100).toFixed(0));
-            let slotNumber = slots.indexOf(this.$moment(start).format('HH:mm'));
-            seriesData.push([dateIndex, slotNumber, occupiedPercentage]);
+            let start = this.$moment(date + ('0000' + slotTime).slice(-4), 'YYYY-MM-DDHHmm');
+            let slotIndex = slots.indexOf(this.$moment(start).format('HH:mm'));
+
+            let capacity = slotsCapacity[slotTime].capacity;
+            if (capacity === 0) {
+              className = 'zeroed_out'
+            } else {
+              let open = slotsCapacity[slotTime].open;
+              occupiedPercentage = parseFloat(((capacity - open) / capacity * 100).toFixed(0));
+            }
+
+            seriesData.push({x: dateIndex, y: slotIndex, value: occupiedPercentage, className: className});
           }
         }
         return seriesData;
@@ -149,5 +166,8 @@
   }
 </script>
 
-<style scoped>
+<style>
+    .zeroed_out {
+        fill: url(#hash4_4);
+    }
 </style>
