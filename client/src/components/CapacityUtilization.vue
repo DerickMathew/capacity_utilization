@@ -8,19 +8,26 @@
                             end-placeholder="End date" value-format="yyyy-MM-dd">
             </el-date-picker>
         </div>
-        <capacity-heat-map v-if="capacities" :capacities="capacities" :dateRange="dateRange"
-                           :experienceId="selectedListing"></capacity-heat-map>
+
+        <div class="body">
+            <capacity-heat-map v-if="capacities" :capacities="capacities" :dateRange="dateRange"
+                               :experienceId="selectedListing"></capacity-heat-map>
+
+            <capacity-table v-if="capacities" :capacities="capacities" :dateRange="dateRange"
+                            :experienceId="selectedListing"></capacity-table>
+        </div>
     </div>
 </template>
 
 <script>
-  import ListingSelector from '@/components/ListingSelector'
+  import ListingSelector from './ListingSelector'
   import CapacityHeatMap from "./CapacityHeatMap";
+  import CapacityTable from "./CapacityTable";
   import {HTTP} from '../http-common';
 
   export default {
     name: "CapacityUtilization",
-    components: {CapacityHeatMap, ListingSelector},
+    components: {CapacityHeatMap, ListingSelector, CapacityTable},
 
     data() {
       return {

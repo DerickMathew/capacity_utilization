@@ -13,8 +13,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@handsontable-pro/vue": "^2.0.0",
     "axios": "^0.18.0",
     "element-ui": "^2.4.6",
+    "handsontable-pro": "^5.0.1",
     "highcharts": "^6.1.1",
     "highcharts-vue": "^1.0.4",
     "moment": "^2.22.2",

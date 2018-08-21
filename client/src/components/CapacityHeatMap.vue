@@ -145,6 +145,10 @@
             symbolHeight: 280
           },
 
+          credits: {
+            enabled: false
+          },
+
           tooltip: {
             formatter: this.tooltipFormatter()
           },
