@@ -4,7 +4,8 @@
             <h2> Capacity Utilization</h2>
             <listing-selector :on-experience-change="onExperienceChange"></listing-selector>
 
-            <el-date-picker v-model="dateRange" type="daterange" start-placeholder="Start date"
+            <el-date-picker v-model="dateRange" :picker-options="datePickerOptions" type="daterange"
+                            start-placeholder="Start date"
                             end-placeholder="End date" value-format="yyyy-MM-dd">
             </el-date-picker>
         </div>
@@ -40,7 +41,11 @@
 
     data() {
       return {
-        dateRange: undefined,
+        dateRange: this.getDefaultDateRange(),
+        datePickerOptions: {
+          disabledDate: this.disabledDate(),
+          onPick: this.onPick()
+        },
         selectedListing: undefined,
         capacities: undefined,
         reportType: 1
@@ -58,6 +63,30 @@
     },
 
     methods: {
+      disabledDate: function() {
+        let self = this;
+        return function(date) {
+          if (self._range && self._range.maxDate == null) {
+            return self.$moment(date) > self.$moment(self._range.minDate).add(62, 'd')
+              || self.$moment(date) < self.$moment(self._range.minDate).add(-62, 'd');
+          }
+          return false;
+        }
+      },
+
+      onPick: function() {
+        let self = this;
+        return function(range) {
+          self._range = range;
+        }
+      },
+
+      getDefaultDateRange: function() {
+        const startOfMonth = this.$moment().startOf('month').format('YYYY-MM-DD');
+        const endOfMonth = this.$moment().endOf('month').format('YYYY-MM-DD');
+        return [startOfMonth, endOfMonth];
+      },
+
       onExperienceChange: function(value) {
         this.selectedListing = value;
       },
@@ -94,6 +123,15 @@
     .header {
         display: flex;
         align-items: center;
+        top: 0;
+        width: 100%;
+        background: white;
+        z-index: 999;
+        position: fixed;
+    }
+
+    .body {
+        margin-top: 68px;
     }
 
     .el-date-editor {
