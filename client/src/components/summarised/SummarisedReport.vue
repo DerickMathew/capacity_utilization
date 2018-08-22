@@ -20,5 +20,7 @@
 </script>
 
 <style scoped>
+    #hot-preview {
 
+    }
 </style>

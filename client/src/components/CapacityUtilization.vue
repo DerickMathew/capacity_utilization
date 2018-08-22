@@ -124,7 +124,7 @@
         display: flex;
         align-items: center;
         top: 0;
-        width: 100%;
+        width: calc(100% - 60px);
         background: white;
         z-index: 999;
         position: fixed;

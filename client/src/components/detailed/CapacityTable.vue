@@ -24,6 +24,13 @@
           colHeaders: this.getColHeaders(),
           rowHeaders: false,
           editor: false,
+          height: 400,
+          width: function() {
+            return window.innerWidth - 100;
+          },
+          colWidths: function() {
+            return (window.innerWidth - 115) / 5
+          }
         }
       };
     },
@@ -92,11 +99,11 @@
 
 <style scoped>
     .hot-preview {
-        margin-top: 20px;
+        margin-top: 25px;
     }
 
     .export {
-        height: 40px;
+        height: 50px;
     }
 
     .export .el-button {

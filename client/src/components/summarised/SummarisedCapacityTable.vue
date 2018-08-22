@@ -24,6 +24,13 @@
           colHeaders: this.getColHeaders(),
           rowHeaders: false,
           editor: false,
+          height: 400,
+          width: function() {
+            return window.innerWidth - 100;
+          },
+          colWidths: function() {
+            return (window.innerWidth - 115) / 4
+          }
         }
       };
     },
@@ -98,7 +105,7 @@
     }
 
     .export {
-        height: 40px;
+        height: 50px;
     }
 
     .export .el-button {
