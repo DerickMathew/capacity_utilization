@@ -25,6 +25,7 @@
           rowHeaders: false,
           editor: false,
           height: 400,
+          className: "htCenter",
           width: function() {
             return window.innerWidth - 100;
           },
@@ -86,6 +87,16 @@
           }
           data.push([date, totalCapacity, totalReserved, capacityUtilization])
         }
+
+        data.sort(function(col1, col2) {
+          if (col1[0] > col2[0]) {
+            return 1;
+          } else if (col1[0] < col2[0]) {
+            return -1
+          }
+          return 0;
+        });
+
         return data;
       }
     }

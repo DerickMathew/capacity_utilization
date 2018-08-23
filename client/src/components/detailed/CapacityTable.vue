@@ -25,6 +25,7 @@
           rowHeaders: false,
           editor: false,
           height: 400,
+          className: "htCenter",
           width: function() {
             return window.innerWidth - 100;
           },
@@ -84,6 +85,28 @@
             data.push([date, slotTime, capacity, booked, capacityUtilization]);
           }
         }
+
+        data.sort(function(col1, col2) {
+          if (col1[0] > col2[0]) {
+            return 1;
+          } else if (col1[0] < col2[0]) {
+            return -1
+          } else {
+            if (col1[1] > col2[1]) {
+              return 1;
+            } else if (col1[1] < col2[1]) {
+              return -1
+            }
+          }
+          return 0;
+        });
+
+        data = data.map(function(col) {
+          let start = this.$moment(col[0] + ('0000' + col[1]).slice(-4), 'YYYY-MM-DDHHmm');
+          col[1] = start.format('HH:mm A');
+          return col;
+        }, this);
+
         return data;
       }
     }

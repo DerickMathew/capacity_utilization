@@ -65,8 +65,17 @@
           capacitySeriesData.push({x: dateIndex, y: totalCapacity});
           reservedSeriesData.push({x: dateIndex, y: totalReserved});
         }
+
+        capacitySeriesData.sort(function(point1, point2) {
+          return point1.x - point2.x;
+        });
+        reservedSeriesData.sort(function(point1, point2) {
+          return point1.x - point2.x;
+        });
+
         seriesData.push({name: "Capacity", data: capacitySeriesData});
         seriesData.push({name: "Guest count", data: reservedSeriesData});
+
         return seriesData;
       },
 
