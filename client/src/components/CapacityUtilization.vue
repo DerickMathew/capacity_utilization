@@ -20,10 +20,10 @@
 
             <div>
                 <detailed-report v-show="reportType == 1" :capacities="capacities" :dateRange="dateRange"
-                                 :experienceId="selectedListing"></detailed-report>
+                                 :selectedListing="selectedListing"></detailed-report>
 
                 <summarised-report v-show="reportType == 2" :capacities="capacities" :dateRange="dateRange"
-                                   :experienceId="selectedListing"></summarised-report>
+                                   :selectedListing="selectedListing"></summarised-report>
             </div>
         </div>
     </div>
@@ -87,14 +87,14 @@
         return [startOfMonth, endOfMonth];
       },
 
-      onExperienceChange: function(value) {
-        this.selectedListing = value;
+      onExperienceChange: function(selectedListing) {
+        this.selectedListing = selectedListing;
       },
 
       fetchCapacity: function() {
         if (this.dateRange && this.selectedListing) {
           let sellerId = '55c2b026ad2171f0438b45e7';
-          let experienceId = this.selectedListing;
+          let experienceId = this.selectedListing.id;
           let self = this;
           let params = {
             seller: sellerId,

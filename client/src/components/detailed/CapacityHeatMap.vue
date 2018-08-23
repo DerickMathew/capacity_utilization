@@ -15,7 +15,7 @@
 
   export default {
     name: "CapacityHeatMap",
-    props: ['capacities', 'dateRange', 'experienceId'],
+    props: ['capacities', 'dateRange', 'selectedListing'],
 
     data() {
       return {
@@ -57,7 +57,7 @@
 
         for (let date in capacities) {
           let slotsCapacity = capacities[date];
-          let dateIndex = dates.indexOf(this.$moment(date).format('MMM DD'));
+          let dateIndex = dates.indexOf(this.$moment(date).format());
 
           for (let slotTime in slotsCapacity) {
             let className = '';
@@ -67,25 +67,42 @@
             let slotIndex = slots.indexOf(this.$moment(start).format('HH:mm'));
 
             let capacity = slotsCapacity[slotTime].capacity;
+            let open = slotsCapacity[slotTime].open;
+
             if (capacity === 0) {
               className = 'zeroed_out'
             } else {
-              let open = slotsCapacity[slotTime].open;
               occupiedPercentage = parseFloat(((capacity - open) / capacity * 100).toFixed(0));
             }
 
-            seriesData.push({x: dateIndex, y: slotIndex, value: occupiedPercentage, className: className});
+            seriesData.push({
+              x: dateIndex,
+              y: slotIndex,
+              value: occupiedPercentage,
+              className: className,
+              reserved: capacity - open,
+              capacity: capacity
+            });
           }
         }
         return seriesData;
       },
 
       tooltipFormatter: function() {
+        let self = this;
         return function() {
-          // let date = this.series.xAxis.categories[this.point.x] + ' ' + moment.months(month - 1) + ' ';
-          let time = this.series.yAxis.categories[this.point.y];
-          let value = this.point.value + '%';
-          return '<b>' + value + '</b> occupied on <b>' + time + ', ' + 'date' + '</b>';
+          let date = self.$moment(this.series.xAxis.categories[this.point.x]).format(' Do MMMM YYYY, h:mm a');
+          let experienceName = self.selectedListing.name;
+
+          let template = `<div class="tooltip-content">
+                            <div>${ experienceName }</div>
+                            <div>${ date }</div>
+                            <br>
+                            <div>${ this.point.capacity } Capacity</div>
+                            <div>${ this.point.reserved } Reserved</div>
+                         </div>`;
+
+          return template;
         }
       },
 
@@ -93,7 +110,7 @@
         let daysOfMonth = [];
         let range = this.$moment.range(this.dateRange[0], this.dateRange[1]);
         for (let date of range.by('day')) {
-          daysOfMonth.push(date.format('MMM DD'));
+          daysOfMonth.push(date.format());
         }
 
         return daysOfMonth;
@@ -101,6 +118,13 @@
 
       getYAxisCategories: function() {
         return this.getSlots()
+      },
+
+      getXAxisLabelFormatter: function() {
+        let self = this;
+        return function() {
+          return self.$moment(this.value).format('MMM DD');
+        }
       },
 
       getChartOptions: function() {
@@ -117,7 +141,10 @@
           },
 
           xAxis: {
-            categories: this.getXAxisCategories()
+            categories: this.getXAxisCategories(),
+            labels: {
+              formatter: this.getXAxisLabelFormatter()
+            }
           },
           yAxis: {
             categories: this.getYAxisCategories(),
@@ -150,6 +177,15 @@
           },
 
           tooltip: {
+            shadow: false,
+            useHTML: true, // This is used to insert spans with classes for custom css
+            backgroundColor: '#343434',
+            borderColor: '#333333',
+            borderRadius: 1,
+            style: {
+              opacity: 0.9,
+              color: '#cccccc'
+            },
             formatter: this.tooltipFormatter()
           },
 
@@ -171,6 +207,10 @@
 </script>
 
 <style>
+    .tooltip-content {
+        font-size: 15px;
+        color: white;
+    }
     .zeroed_out {
         fill: url(#hash4_4);
     }

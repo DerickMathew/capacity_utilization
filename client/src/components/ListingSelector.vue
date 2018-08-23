@@ -1,9 +1,9 @@
 <template>
     <div>
-        <el-select v-model="selectedListing" filterable placeholder="Select Listing"
+        <el-select v-model="selectedExperience" filterable placeholder="Select Listing"
                    @change="onExperienceChange">
-            <el-option v-for="experience in listings" :key="experience.value" :label="experience.label"
-                       :value="experience.value">
+            <el-option v-for="experience in experiences" :key="experience.id" :label="experience.name"
+                       :value="experience.id">
             </el-option>
         </el-select>
     </div>
@@ -18,14 +18,17 @@
 
     data() {
       return {
-        listings: [],
-        selectedListing: ''
+        experiences: [],
+        selectedExperience: ''
       }
     },
 
     watch: {
-      selectedListing: function() {
-        this.onExperienceChange(this.selectedListing)
+      selectedExperience: function() {
+        let experience = this.experiences.find(function(experience) {
+          return experience.id === this.selectedExperience;
+        }, this);
+        this.onExperienceChange(experience)
       }
     },
 
@@ -34,8 +37,8 @@
       let sellerId = '55c2b026ad2171f0438b45e7';
       HTTP.get('api/experiences?seller=' + sellerId)
         .then(response => {
-          self.listings = self.parseExperiences(response.data.data);
-          self.selectedListing = self.listings[0].value
+          self.experiences = self.parseExperiences(response.data.data);
+          self.selectedExperience = self.experiences[0].id
         })
     },
 
@@ -43,7 +46,7 @@
       parseExperiences: data => {
         let parsedData = [];
         for (let experience of data) {
-          parsedData.push({value: experience.id, label: experience.name})
+          parsedData.push({id: experience.id, name: experience.name})
         }
         return parsedData;
       }

@@ -1,7 +1,7 @@
 <template>
     <div>
         <capacity-heat-map v-if="capacities" :capacities="capacities" :dateRange="dateRange"
-                           :experienceId="selectedListing"></capacity-heat-map>
+                           :selectedListing="selectedListing"></capacity-heat-map>
 
         <capacity-table v-if="capacities" :capacities="capacities" :dateRange="dateRange"
                         :experienceId="selectedListing"></capacity-table>
