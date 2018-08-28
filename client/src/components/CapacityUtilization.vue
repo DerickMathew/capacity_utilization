@@ -55,10 +55,6 @@
     watch: {
       dateRange: function() {
         this.fetchCapacity();
-      },
-
-      selectedListing: function() {
-        this.fetchCapacity();
       }
     },
 
@@ -89,6 +85,7 @@
 
       onExperienceChange: function(selectedListing) {
         this.selectedListing = selectedListing;
+        this.fetchCapacity();
       },
 
       fetchCapacity: function() {

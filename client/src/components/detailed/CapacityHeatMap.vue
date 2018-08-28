@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="chart-container" ref="chartContainer">
         <svg style="height: 0">
             <defs>
                 <pattern id="hash4_4" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -31,9 +31,14 @@
 
     methods: {
       redraw() {
+        let yAxisCategories = this.getYAxisCategories();
+        let containerHeight = Math.max(yAxisCategories.length * 35 + 100, 450);
+        this.$refs.chartContainer.style.height = containerHeight + 'px';
         this.options.xAxis.categories = this.getXAxisCategories();
-        this.options.yAxis.categories = this.getYAxisCategories();
+        this.options.yAxis.categories = yAxisCategories;
         this.options.series[0].data = this.getSeriesData();
+        this.options.chart.height = containerHeight - 50;
+        this.options.chart.width = this.$refs.chartContainer.style.width;
       },
 
       getSlots: function() {
@@ -178,7 +183,7 @@
 
           tooltip: {
             shadow: false,
-            useHTML: true, // This is used to insert spans with classes for custom css
+            useHTML: true,
             backgroundColor: '#343434',
             borderColor: '#333333',
             borderRadius: 1,
@@ -187,6 +192,12 @@
               color: '#cccccc'
             },
             formatter: this.tooltipFormatter()
+          },
+
+          plotOptions: {
+            series: {
+              turboThreshold: 0
+            }
           },
 
           series: [{
@@ -213,5 +224,11 @@
     }
     .zeroed_out {
         fill: url(#hash4_4);
+    }
+</style>
+
+<style scoped>
+    .chart-container {
+        width: 100%;
     }
 </style>

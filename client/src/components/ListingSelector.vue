@@ -1,7 +1,6 @@
 <template>
     <div>
-        <el-select v-model="selectedExperience" filterable placeholder="Select Listing"
-                   @change="onExperienceChange">
+        <el-select v-model="selectedExperience" filterable placeholder="Select Listing">
             <el-option v-for="experience in experiences" :key="experience.id" :label="experience.name"
                        :value="experience.id">
             </el-option>
