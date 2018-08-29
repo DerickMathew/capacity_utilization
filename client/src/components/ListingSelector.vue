@@ -13,7 +13,7 @@
 
   export default {
     name: 'ListingSelector',
-    props: ['onExperienceChange'],
+    props: ['onExperienceChange', 'sellerId'],
 
     data() {
       return {
@@ -23,7 +23,7 @@
     },
 
     watch: {
-      selectedExperience: function() {
+      selectedExperience() {
         let experience = this.experiences.find(function(experience) {
           return experience.id === this.selectedExperience;
         }, this);
@@ -31,10 +31,9 @@
       }
     },
 
-    created: function() {
+    created() {
       let self = this;
-      let sellerId = '55c2b026ad2171f0438b45e7';
-      HTTP.get('api/experiences?seller=' + sellerId)
+      HTTP.get('api/experiences?seller=' + this.sellerId)
         .then(response => {
           self.experiences = self.parseExperiences(response.data.data);
           self.selectedExperience = self.experiences[0].id
@@ -42,7 +41,7 @@
     },
 
     methods: {
-      parseExperiences: data => {
+      parseExperiences(data) {
         let parsedData = [];
         for (let experience of data) {
           parsedData.push({id: experience.id, name: experience.name})

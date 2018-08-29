@@ -2,7 +2,7 @@
     <div>
         <div class="header">
             <h2> Capacity Utilization</h2>
-            <listing-selector :on-experience-change="onExperienceChange"></listing-selector>
+            <listing-selector :on-experience-change="onExperienceChange" :sellerId=sellerId></listing-selector>
 
             <el-date-picker v-model="dateRange" :picker-options="datePickerOptions" type="daterange"
                             start-placeholder="Start date"
@@ -52,6 +52,11 @@
       }
     },
 
+    created() {
+      let params = (new URL(document.location)).searchParams;
+      this.sellerId = params.get('seller');
+    },
+
     watch: {
       dateRange: function() {
         this.fetchCapacity();
@@ -59,7 +64,7 @@
     },
 
     methods: {
-      disabledDate: function() {
+      disabledDate() {
         let self = this;
         return function(date) {
           if (self._range && self._range.maxDate == null) {
@@ -70,27 +75,27 @@
         }
       },
 
-      onPick: function() {
+      onPick() {
         let self = this;
         return function(range) {
           self._range = range;
         }
       },
 
-      getDefaultDateRange: function() {
+      getDefaultDateRange() {
         const startOfMonth = this.$moment().startOf('month').format('YYYY-MM-DD');
         const endOfMonth = this.$moment().endOf('month').format('YYYY-MM-DD');
         return [startOfMonth, endOfMonth];
       },
 
-      onExperienceChange: function(selectedListing) {
+      onExperienceChange(selectedListing) {
         this.selectedListing = selectedListing;
         this.fetchCapacity();
       },
 
-      fetchCapacity: function() {
+      fetchCapacity() {
         if (this.dateRange && this.selectedListing) {
-          let sellerId = '55c2b026ad2171f0438b45e7';
+          let sellerId = this.sellerId;
           let experienceId = this.selectedListing.id;
           let self = this;
           let params = {
