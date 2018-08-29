@@ -4,7 +4,7 @@
             <el-button @click="onExport">Export</el-button>
         </div>
         <div class="hot-table">
-            <HotTable :settings="settings" ref="testHot"></HotTable>
+            <HotTable :settings="settings" ref="hot"></HotTable>
         </div>
     </div>
 </template>
@@ -15,7 +15,7 @@
   export default {
     name: "CapacityTable",
     components: {HotTable},
-    props: ['capacities', 'dateRange', 'experienceId'],
+    props: ['capacities', 'dateRange', 'experienceId', 'reportType'],
 
     data: function() {
       return {
@@ -39,12 +39,18 @@
     watch: {
       capacities: function() {
         this.settings.data = this.getData();
+      },
+
+      reportType: function() {
+        if (this.reportType === 1) {
+          this.$refs.hot.table.render();
+        }
       }
     },
 
     methods: {
       onExport: function() {
-        let exportFile = this.$refs.testHot.table.getPlugin('exportFile');
+        let exportFile = this.$refs.hot.table.getPlugin('exportFile');
         exportFile.downloadFile('csv', {
           bom: false,
           columnDelimiter: ',',

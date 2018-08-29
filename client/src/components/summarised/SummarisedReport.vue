@@ -3,8 +3,8 @@
         <capacity-line-chart v-if="capacities" :capacities="capacities" :dateRange="dateRange"
                              :experienceId="selectedListing"></capacity-line-chart>
 
-        <summarised-capacity-table v-if="capacities" :capacities="capacities" :dateRange="dateRange"
-                                   :experienceId="selectedListing"></summarised-capacity-table>
+        <summarised-capacity-table v-show="reportType == 2" v-if="capacities" :capacities="capacities" :dateRange="dateRange"
+                                   :experienceId="selectedListing" :report-type="reportType"></summarised-capacity-table>
     </div>
 </template>
 
@@ -14,7 +14,7 @@
 
   export default {
     name: "SummarisedReport",
-    props: ['capacities', 'dateRange', 'selectedListing'],
+    props: ['capacities', 'dateRange', 'selectedListing', 'reportType'],
     components: {CapacityLineChart, SummarisedCapacityTable}
   }
 </script>

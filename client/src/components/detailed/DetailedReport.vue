@@ -4,7 +4,7 @@
                            :selectedListing="selectedListing"></capacity-heat-map>
 
         <capacity-table v-if="capacities" :capacities="capacities" :dateRange="dateRange"
-                        :experienceId="selectedListing"></capacity-table>
+                        :experienceId="selectedListing" :reportType="reportType"></capacity-table>
     </div>
 </template>
 
@@ -14,7 +14,7 @@
 
   export default {
     name: "DetailedReport",
-    props: ['capacities', 'dateRange', 'selectedListing'],
+    props: ['capacities', 'dateRange', 'selectedListing', 'reportType'],
     components: {CapacityHeatMap, CapacityTable}
   }
 </script>

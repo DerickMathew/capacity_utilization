@@ -15,7 +15,7 @@
   export default {
     name: "SummarisedCapacityTable",
     components: {HotTable},
-    props: ['capacities', 'dateRange', 'experienceId'],
+    props: ['capacities', 'dateRange', 'experienceId', 'reportType'],
 
     data: function() {
       return {
@@ -39,6 +39,12 @@
     watch: {
       capacities: function() {
         this.settings.data = this.getData();
+      },
+
+      reportType: function() {
+        if (this.reportType === 2) {
+          this.$refs.hot.table.render();
+        }
       }
     },
 

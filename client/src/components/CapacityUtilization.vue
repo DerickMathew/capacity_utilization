@@ -20,10 +20,10 @@
 
             <div>
                 <detailed-report v-show="reportType == 1" :capacities="capacities" :dateRange="dateRange"
-                                 :selectedListing="selectedListing"></detailed-report>
+                                 :selectedListing="selectedListing" :reportType="reportType"></detailed-report>
 
                 <summarised-report v-show="reportType == 2" :capacities="capacities" :dateRange="dateRange"
-                                   :selectedListing="selectedListing"></summarised-report>
+                                   :selectedListing="selectedListing" :reportType="reportType"></summarised-report>
             </div>
         </div>
     </div>
