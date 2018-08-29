@@ -73,11 +73,27 @@
 
             let capacity = slotsCapacity[slotTime].capacity;
             let open = slotsCapacity[slotTime].open;
+            let reserved = capacity - open;
+
+            let privateEvent = slotsCapacity[slotTime].private;
+            let manuallyAdjusted = slotsCapacity[slotTime].max !== undefined;
+            let overbooked = capacity < reserved;
 
             if (capacity === 0) {
               className = 'zeroed_out'
             } else {
-              occupiedPercentage = parseFloat(((capacity - open) / capacity * 100).toFixed(0));
+              occupiedPercentage = parseFloat((reserved / capacity * 100).toFixed(0));
+            }
+
+            if (privateEvent) {
+              className += ' private_event'
+            }
+            if (manuallyAdjusted) {
+              className += ' manually_adjusted'
+            }
+
+            if (overbooked) {
+              className += ' overbooked'
             }
 
             seriesData.push({
@@ -85,8 +101,11 @@
               y: slotIndex,
               value: occupiedPercentage,
               className: className,
-              reserved: capacity - open,
-              capacity: capacity
+              reserved: reserved,
+              capacity: capacity,
+              private: privateEvent,
+              manuallyAdjusted: manuallyAdjusted,
+              overbooked: overbooked
             });
           }
         }
@@ -98,11 +117,26 @@
         return function() {
           let date = self.$moment(this.series.xAxis.categories[this.point.x]).format('lll');
 
+          let eventInfo = '';
+
+          if (this.point.manuallyAdjusted) {
+            eventInfo += '<div>Manually adjusted capacity</div>'
+          }
+          if (this.point.private) {
+            eventInfo += '<div>Private event</div>'
+          }
+
+          if (this.point.overbooked) {
+            eventInfo += '<div>Overbooked</div>'
+          }
+
           let template = `<div class="tooltip-content">
                             <div>${ date }</div>
                             <br>
                             <div>${ this.point.capacity } Capacity</div>
                             <div>${ this.point.reserved } Reserved</div>
+                            <br>
+                            ${ eventInfo }
                          </div>`;
 
           return template;
