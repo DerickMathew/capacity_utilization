@@ -1,9 +1,11 @@
 {
   "name": "capacity_utilization",
   "version": "1.0.0",
+  "private": true,
   "description": "capacity utilization visualization app",
   "main": "index.js",
   "scripts": {
+    "start": "node ./server.esm.js",
     "test": "test"
   },
   "repository": {
@@ -15,5 +17,11 @@
   "bugs": {
     "url": "https://github.com/vinaymor002/capacity_utilization/issues"
   },
-  "homepage": "https://github.com/vinaymor002/capacity_utilization#readme"
+  "homepage": "https://github.com/vinaymor002/capacity_utilization#readme",
+  "dependencies": {
+    "config": "^2.0.1",
+    "cookie-parser": "^1.4.3",
+    "esm": "^3.0.80",
+    "express": "^4.16.3"
+  }
 }
