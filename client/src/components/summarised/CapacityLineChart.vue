@@ -16,6 +16,11 @@
       }
     },
 
+    beforeCreate() {
+      this.SERIES_CAPACITY = 'Capacity';
+      this.SERIES_GUEST_COUNT = 'Guest count';
+    },
+
     watch: {
       capacities: function() {
         this.redraw();
@@ -50,7 +55,7 @@
 
         for (let date in capacities) {
           let slotsCapacity = capacities[date];
-          let dateIndex = dates.indexOf(this.$moment(date).format('MMM DD'));
+          let dateIndex = dates.indexOf(this.$moment(date).format());
           let totalCapacity = 0;
           let totalReserved = 0;
 
@@ -62,8 +67,8 @@
             totalReserved += reserved;
           }
 
-          capacitySeriesData.push({x: dateIndex, y: totalCapacity});
-          reservedSeriesData.push({x: dateIndex, y: totalReserved});
+          capacitySeriesData.push({x: dateIndex, y: totalCapacity, reserved: totalReserved});
+          reservedSeriesData.push({x: dateIndex, y: totalReserved, capacity: totalCapacity});
         }
 
         capacitySeriesData.sort(function(point1, point2) {
@@ -73,18 +78,30 @@
           return point1.x - point2.x;
         });
 
-        seriesData.push({name: "Capacity", data: capacitySeriesData});
-        seriesData.push({name: "Guest count", data: reservedSeriesData});
+        seriesData.push({name: this.SERIES_CAPACITY, data: capacitySeriesData});
+        seriesData.push({name: this.SERIES_GUEST_COUNT, data: reservedSeriesData});
 
         return seriesData;
       },
 
       tooltipFormatter: function() {
+        let self = this;
         return function() {
-          // let date = this.series.xAxis.categories[this.point.x] + ' ' + moment.months(month - 1) + ' ';
-          // let time = this.series.yAxis.categories[this.point.y];
-          // let value = this.point.value + '%';
-          // return '<b>' + value + '</b> occupied on <b>' + time + ', ' + 'date' + '</b>';
+          let date = self.$moment(this.series.xAxis.categories[this.point.x]).format('l');
+          let count;
+          if (this.series.name === self.SERIES_CAPACITY) {
+            count = `<div> ${ this.point.y } Capacity </div>
+                    <div> ${ this.point.reserved } Reserved </div>`
+          } else {
+            count = `<div> ${ this.point.capacity } Capacity </div>
+                    <div> ${ this.point.y } Reserved </div>`
+          }
+
+          return `<div class="tooltip-content">
+                            <div>${ date }</div>
+                            <br>
+                            ${count}
+                         </div>`;
         }
       },
 
@@ -92,10 +109,17 @@
         let daysOfMonth = [];
         let range = this.$moment.range(this.dateRange[0], this.dateRange[1]);
         for (let date of range.by('day')) {
-          daysOfMonth.push(date.format('MMM DD'));
+          daysOfMonth.push(date.format());
         }
 
         return daysOfMonth;
+      },
+
+      getXAxisLabelFormatter: function() {
+        let self = this;
+        return function() {
+          return self.$moment(this.value).format('MMM DD');
+        }
       },
 
       getYAxisCategories: function() {
@@ -116,7 +140,10 @@
           },
 
           xAxis: {
-            categories: this.getXAxisCategories()
+            categories: this.getXAxisCategories(),
+            labels: {
+              formatter: this.getXAxisLabelFormatter()
+            }
           },
           yAxis: {
             title: null
@@ -133,6 +160,15 @@
           },
 
           tooltip: {
+            shadow: false,
+            useHTML: true,
+            backgroundColor: '#343434',
+            borderColor: '#333333',
+            borderRadius: 1,
+            style: {
+              opacity: 0.9,
+              color: '#cccccc'
+            },
             formatter: this.tooltipFormatter()
           },
 

@@ -96,11 +96,9 @@
       tooltipFormatter: function() {
         let self = this;
         return function() {
-          let date = self.$moment(this.series.xAxis.categories[this.point.x]).format(' Do MMMM YYYY, h:mm a');
-          let experienceName = self.selectedListing.name;
+          let date = self.$moment(this.series.xAxis.categories[this.point.x]).format('lll');
 
           let template = `<div class="tooltip-content">
-                            <div>${ experienceName }</div>
                             <div>${ date }</div>
                             <br>
                             <div>${ this.point.capacity } Capacity</div>
