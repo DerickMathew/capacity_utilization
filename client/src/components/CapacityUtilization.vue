@@ -68,8 +68,8 @@
         let self = this;
         return function(date) {
           if (self._range && self._range.maxDate == null) {
-            return self.$moment(date) > self.$moment(self._range.minDate).add(62, 'd')
-              || self.$moment(date) < self.$moment(self._range.minDate).add(-62, 'd');
+            return self.$moment(date) > self.$moment(self._range.minDate).add(31, 'd')
+              || self.$moment(date) < self.$moment(self._range.minDate).add(-31, 'd');
           }
           return false;
         }
@@ -126,10 +126,12 @@
         display: flex;
         align-items: center;
         top: 0;
-        width: calc(100% - 60px);
+        width: calc(100% - 50px);
         background: white;
         z-index: 999;
         position: fixed;
+        margin-left: -25px;
+        padding: 0 25px;
     }
 
     .body {

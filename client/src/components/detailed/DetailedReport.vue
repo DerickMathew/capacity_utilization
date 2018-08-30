@@ -4,7 +4,7 @@
                            :selectedListing="selectedListing"></capacity-heat-map>
 
         <capacity-table v-if="capacities" :capacities="capacities" :dateRange="dateRange"
-                        :experienceId="selectedListing" :reportType="reportType"></capacity-table>
+                        :selectedListing="selectedListing" :reportType="reportType"></capacity-table>
     </div>
 </template>
 

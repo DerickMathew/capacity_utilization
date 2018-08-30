@@ -30,14 +30,19 @@
     },
 
     methods: {
-      redraw() {
+      calculateChartHeight: function() {
         let yAxisCategories = this.getYAxisCategories();
         let containerHeight = Math.max(yAxisCategories.length * 35 + 100, 450);
-        this.$refs.chartContainer.style.height = containerHeight + 'px';
+        return containerHeight - 50;
+      },
+
+      redraw() {
+        let yAxisCategories = this.getYAxisCategories();
+
         this.options.xAxis.categories = this.getXAxisCategories();
         this.options.yAxis.categories = yAxisCategories;
         this.options.series[0].data = this.getSeriesData();
-        this.options.chart.height = containerHeight - 50;
+        this.options.chart.height = this.calculateChartHeight();
         this.options.chart.width = this.$refs.chartContainer.style.width;
       },
 
@@ -170,7 +175,8 @@
             type: 'heatmap',
             marginTop: 40,
             marginBottom: 80,
-            plotBorderWidth: 1
+            plotBorderWidth: 1,
+            height: this.calculateChartHeight()
           },
 
           title: {

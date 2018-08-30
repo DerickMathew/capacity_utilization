@@ -15,7 +15,7 @@
   export default {
     name: "CapacityTable",
     components: {HotTable},
-    props: ['capacities', 'dateRange', 'experienceId', 'reportType'],
+    props: ['capacities', 'dateRange', 'selectedListing', 'reportType'],
 
     data: function() {
       return {
@@ -51,6 +51,9 @@
     methods: {
       onExport: function() {
         let exportFile = this.$refs.hot.table.getPlugin('exportFile');
+        let experienceName = this.selectedListing.name;
+        let range = `${this.dateRange[0]}_ ${this.dateRange[1]}`;
+
         exportFile.downloadFile('csv', {
           bom: false,
           columnDelimiter: ',',
@@ -58,7 +61,7 @@
           exportHiddenColumns: true,
           exportHiddenRows: true,
           fileExtension: 'csv',
-          filename: 'capacity_utilization_[YYYY]-[MM]-[DD]',
+          filename: `capacity_detail_${experienceName}_${range}`,
           mimeType: 'text/csv',
           rowDelimiter: '\r\n',
           rowHeaders: false
@@ -66,7 +69,7 @@
       },
 
       getColHeaders: function() {
-        return ["Date", "Time", "Event capacity", "Guest count booked", "Capacity utilisation"];
+        return ["Date", "Time", "Event capacity", "Guest count booked", "Capacity utilisation(%)"];
       },
 
       getData: function() {
@@ -85,7 +88,7 @@
             if (capacity !== 0) {
               capacityUtilization = parseFloat((booked / capacity * 100).toFixed(0));
             } else {
-              capacityUtilization = 'N/A'
+              capacityUtilization = '--'
             }
 
             data.push([date, slotTime, capacity, booked, capacityUtilization]);

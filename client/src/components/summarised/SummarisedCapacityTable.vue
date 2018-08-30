@@ -51,6 +51,9 @@
     methods: {
       onExport: function() {
         let exportFile = this.$refs.hot.table.getPlugin('exportFile');
+        let experienceName = this.selectedListing.name;
+        let range = `${this.dateRange[0]}_ ${this.dateRange[1]}`;
+
         exportFile.downloadFile('csv', {
           bom: false,
           columnDelimiter: ',',
@@ -58,7 +61,7 @@
           exportHiddenColumns: true,
           exportHiddenRows: true,
           fileExtension: 'csv',
-          filename: 'capacity_utilization_[YYYY]-[MM]-[DD]',
+          filename: `capacity_summarised_${experienceName}_${range}`,
           mimeType: 'text/csv',
           rowDelimiter: '\r\n',
           rowHeaders: false
@@ -66,7 +69,7 @@
       },
 
       getColHeaders: function() {
-        return ["Date", "Total Event capacity", "Total guest count booked", "Capacity utilisation"];
+        return ["Date", "Total Event capacity", "Total guest count booked", "Capacity utilisation(%)"];
       },
 
       getData: function() {
@@ -89,7 +92,7 @@
           if (totalCapacity !== 0) {
             capacityUtilization = parseFloat((totalReserved / totalCapacity * 100).toFixed(0));
           } else {
-            capacityUtilization = 'N/A'
+            capacityUtilization = '--'
           }
           data.push([date, totalCapacity, totalReserved, capacityUtilization])
         }
