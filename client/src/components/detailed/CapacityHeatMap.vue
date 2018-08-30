@@ -81,7 +81,7 @@
             let reserved = capacity - open;
 
             let privateEvent = slotsCapacity[slotTime].private;
-            let manuallyAdjusted = slotsCapacity[slotTime].max !== undefined;
+            let manuallyAdjusted = slotsCapacity[slotTime].capcityManuallyAdjusted;
             let overbooked = capacity < reserved;
 
             if (capacity === 0) {
@@ -241,7 +241,7 @@
           series: [{
             name: '',
             borderWidth: 1,
-            borderColor: "#46a546",
+            borderColor: "#d5ff9e",
             data: this.getSeriesData(),
             dataLabels: {
               "enabled": true,
@@ -263,6 +263,11 @@
     .zeroed_out {
         fill: url(#hash4_4);
     }
+
+    .overbooked {
+        fill: #ff0000;
+    }
+
 </style>
 
 <style scoped>

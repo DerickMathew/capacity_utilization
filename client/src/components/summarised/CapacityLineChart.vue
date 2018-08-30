@@ -87,7 +87,7 @@
       tooltipFormatter: function() {
         let self = this;
         return function() {
-          let date = self.$moment(this.series.xAxis.categories[this.point.x]).format('l');
+          let date = self.$moment(this.series.xAxis.categories[this.point.x]).format('ll');
           let count;
           if (this.series.name === self.SERIES_CAPACITY) {
             count = `<div> ${ this.point.y } Capacity </div>
