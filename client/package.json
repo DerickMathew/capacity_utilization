@@ -19,6 +19,7 @@
     "handsontable-pro": "^5.0.1",
     "highcharts": "^6.1.1",
     "highcharts-vue": "^1.0.4",
+    "iframe-resizer": "^3.6.1",
     "moment": "^2.22.2",
     "moment-range": "^4.0.1",
     "vue": "^2.5.2",

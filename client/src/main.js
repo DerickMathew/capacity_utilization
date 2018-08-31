@@ -8,6 +8,7 @@ import HighchartsVue from 'highcharts-vue'
 import Highcharts from 'highcharts'
 import Moment from "moment";
 import {extendMoment} from 'moment-range';
+import iframeResizer from 'iframe-resizer'
 
 const moment = extendMoment(Moment);
 

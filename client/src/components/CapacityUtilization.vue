@@ -135,7 +135,7 @@
     }
 
     .body {
-        margin-top: 68px;
+        margin: 68px 0;
     }
 
     .el-date-editor {
