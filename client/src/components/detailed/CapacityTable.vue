@@ -95,24 +95,17 @@
           }
         }
 
-        data.sort(function(col1, col2) {
-          if (col1[0] > col2[0]) {
-            return 1;
-          } else if (col1[0] < col2[0]) {
-            return -1
-          } else {
-            if (col1[1] > col2[1]) {
-              return 1;
-            } else if (col1[1] < col2[1]) {
-              return -1
-            }
-          }
-          return 0;
+        let self = this;
+
+        data.sort(function(row1, row2) {
+          let start1 = self.$moment(row1[0] + ('0000' + row1[1]).slice(-4), 'YYYY-MM-DDHHmm');
+          let start2 = self.$moment(row2[0] + ('0000' + row2[1]).slice(-4), 'YYYY-MM-DDHHmm');
+          return start1.isBefore(start2) ? 0 : 1
         });
 
         data = data.map(function(col) {
           let start = this.$moment(col[0] + ('0000' + col[1]).slice(-4), 'YYYY-MM-DDHHmm');
-          col[1] = start.format('HH:mm A');
+          col[1] = start.format('hh:mm A');
           return col;
         }, this);
 

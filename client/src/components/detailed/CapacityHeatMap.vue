@@ -82,10 +82,17 @@
 
             let privateEvent = slotsCapacity[slotTime].private;
             let manuallyAdjusted = slotsCapacity[slotTime].capcityManuallyAdjusted;
+            let closed = slotsCapacity[slotTime].closed;
             let overbooked = capacity < reserved;
+            let invantoryRestriction = false;
 
             if (capacity === 0) {
-              className = 'zeroed_out'
+              if (manuallyAdjusted) {
+                className = 'manual_zeroed_out'
+              } else {
+                className = ' inventory_restriction'
+                invantoryRestriction = true
+              }
             } else {
               occupiedPercentage = parseFloat((reserved / capacity * 100).toFixed(0));
             }
@@ -101,16 +108,23 @@
               className += ' overbooked'
             }
 
+            if (closed) {
+              className += ' closed'
+            }
+
             seriesData.push({
               x: dateIndex,
               y: slotIndex,
+              start: start,
               value: occupiedPercentage,
               className: className,
               reserved: reserved,
               capacity: capacity,
               private: privateEvent,
               manuallyAdjusted: manuallyAdjusted,
-              overbooked: overbooked
+              overbooked: overbooked,
+              closed: closed,
+              inventoryRestriction: invantoryRestriction
             });
           }
         }
@@ -120,7 +134,7 @@
       tooltipFormatter: function() {
         let self = this;
         return function() {
-          let date = self.$moment(this.series.xAxis.categories[this.point.x]).format('lll');
+          let date = self.$moment(this.point.start).format('lll');
 
           let eventInfo = '';
 
@@ -133,6 +147,14 @@
 
           if (this.point.overbooked) {
             eventInfo += '<div>Overbooked</div>'
+          }
+
+          if (this.point.closed) {
+            eventInfo += '<div>Schedule removed</div>'
+          }
+
+          if (this.point.inventoryRestriction) {
+            eventInfo += '<div>Inventory unavailable</div>'
           }
 
           let template = `<div class="tooltip-content">
@@ -260,12 +282,21 @@
         font-size: 15px;
         color: white;
     }
-    .zeroed_out {
+
+    .manual_zeroed_out {
         fill: url(#hash4_4);
     }
 
     .overbooked {
         fill: #ff0000;
+    }
+
+    .inventory_restriction {
+        fill: orange;
+    }
+
+    .closed {
+        fill: grey;
     }
 
 </style>
