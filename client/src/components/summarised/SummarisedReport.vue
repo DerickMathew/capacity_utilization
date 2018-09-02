@@ -4,7 +4,7 @@
                              :experienceId="selectedListing"></capacity-line-chart>
 
         <summarised-capacity-table v-show="reportType == 2" v-if="capacities" :capacities="capacities" :dateRange="dateRange"
-                                   :experienceId="selectedListing" :report-type="reportType"></summarised-capacity-table>
+                                   :selectedListing="selectedListing" :report-type="reportType"></summarised-capacity-table>
     </div>
 </template>
 

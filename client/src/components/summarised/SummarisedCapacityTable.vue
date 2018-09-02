@@ -15,7 +15,7 @@
   export default {
     name: "SummarisedCapacityTable",
     components: {HotTable},
-    props: ['capacities', 'dateRange', 'experienceId', 'reportType'],
+    props: ['capacities', 'dateRange', 'selectedListing', 'reportType'],
 
     data: function() {
       return {

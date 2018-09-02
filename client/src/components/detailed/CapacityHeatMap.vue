@@ -2,11 +2,56 @@
     <div class="chart-container" ref="chartContainer">
         <svg style="height: 0">
             <defs>
-                <pattern id="hash4_4" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <pattern id="zeroed-out" width="8" height="8" patternUnits="userSpaceOnUse"
+                         patternTransform="rotate(45)">
                     <rect width="8" height="8" transform="translate(7,0)" fill="black"></rect>
+                </pattern>
+
+                <pattern id="private" width="1" height="1" patternContentUnits="objectBoundingBox">
+                    <polygon points=".5 0,1 0,1 .5" fill="blue"/>
                 </pattern>
             </defs>
         </svg>
+
+        <div class="event_legend">
+            <div class="legend">
+                <svg class="legend-overbooked">
+                    <rect height="30px" width="30px" class="overbooked"></rect>
+                </svg>
+                <label>Overbooked</label>
+            </div>
+
+            <div class="legend">
+                <svg class="legend-zeroed-out">
+                    <rect height="30px" width="30px" class="manual-zeroed-out"></rect>
+                </svg>
+                <label>Zeroed out</label>
+            </div>
+
+            <div class="legend">
+                <svg class="legend-closed">
+                    <rect height="30px" width="30px" class="closed"></rect>
+                </svg>
+                <label>Schedule removed</label>
+            </div>
+
+            <div class="legend">
+                <svg class="legend-inventory-restriction">
+                    <rect height="30px" width="30px" class="inventory-restriction"></rect>
+                </svg>
+                <label>Inventory restriction</label>
+            </div>
+
+            <div class="legend">
+                <svg class="private">
+                    <rect height="30px" width="30px" class="private"></rect>
+                </svg>
+                <label>Private</label>
+            </div>
+
+
+        </div>
+
         <highcharts class="chart" :options="options" :updateArgs=[true]></highcharts>
     </div>
 </template>
@@ -88,9 +133,9 @@
 
             if (capacity === 0) {
               if (manuallyAdjusted) {
-                className = 'manual_zeroed_out'
+                className = 'manual-zeroed-out'
               } else {
-                className = ' inventory_restriction'
+                className = ' inventory-restriction'
                 invantoryRestriction = true
               }
             } else {
@@ -134,7 +179,7 @@
       tooltipFormatter: function() {
         let self = this;
         return function() {
-          let date = self.$moment(this.point.start).format('lll');
+          let date = self.$moment(this.point.start).format('llll');
 
           let eventInfo = '';
 
@@ -283,22 +328,51 @@
         color: white;
     }
 
-    .manual_zeroed_out {
-        fill: url(#hash4_4);
+    .manual-zeroed-out {
+        fill: url(#zeroed-out);
     }
 
     .overbooked {
         fill: #ff0000;
     }
 
-    .inventory_restriction {
+    .inventory-restriction {
         fill: orange;
     }
 
     .closed {
-        fill: grey;
+        fill: #c7c7c7;
     }
 
+    .private {
+        fill: url(#private);
+    }
+
+    .event_legend {
+        padding-left: 52px;
+        display: flex;
+        height: 32px;
+
+    }
+
+    .legend {
+        display: flex;
+        align-items: center;
+        margin-right: 15px;
+    }
+
+    .legend label {
+        margin-left: 5px;
+    }
+
+    .legend > svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .legend > svg > rect {
+        stroke: #d5ff9e
+    }
 </style>
 
 <style scoped>
