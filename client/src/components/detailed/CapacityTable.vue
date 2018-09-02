@@ -1,34 +1,24 @@
 <template>
-    <div id="hot-preview">
-        <div class="export">
-            <el-button @click="onExport">Export</el-button>
-        </div>
-        <div class="hot-table">
-            <HotTable :settings="settings" ref="hot"></HotTable>
-        </div>
+    <div>
+        <DataTable v-if="reportType==1" :options="options"></DataTable>
     </div>
 </template>
 
+
 <script>
-  import HotTable from '@handsontable-pro/vue';
+  import DataTable from '../common/DataTable';
 
   export default {
     name: "CapacityTable",
-    components: {HotTable},
+    components: {DataTable},
     props: ['capacities', 'dateRange', 'selectedListing', 'reportType'],
 
     data: function() {
       return {
-        settings: {
+        options: {
           data: this.getData(),
-          colHeaders: this.getColHeaders(),
-          rowHeaders: false,
-          editor: false,
-          height: 400,
-          className: "htCenter",
-          width: function() {
-            return window.innerWidth - 100;
-          },
+          colHeaders: ["Date", "Time", "Event capacity", "Guest count booked", "Capacity utilisation(%)"],
+          fileName: this.getFileName(),
           colWidths: function() {
             return (window.innerWidth - 115) / 5
           }
@@ -38,38 +28,16 @@
 
     watch: {
       capacities: function() {
-        this.settings.data = this.getData();
-      },
-
-      reportType: function() {
-        if (this.reportType === 1) {
-          this.$refs.hot.table.render();
-        }
+        this.options.data = this.getData();
+        this.options.fileName = this.getFileName();
       }
     },
 
     methods: {
-      onExport: function() {
-        let exportFile = this.$refs.hot.table.getPlugin('exportFile');
+      getFileName() {
         let experienceName = this.selectedListing.name;
         let range = `${this.dateRange[0]}_ ${this.dateRange[1]}`;
-
-        exportFile.downloadFile('csv', {
-          bom: false,
-          columnDelimiter: ',',
-          columnHeaders: this.getColHeaders(),
-          exportHiddenColumns: true,
-          exportHiddenRows: true,
-          fileExtension: 'csv',
-          filename: `capacity_detail_${experienceName}_${range}`,
-          mimeType: 'text/csv',
-          rowDelimiter: '\r\n',
-          rowHeaders: false
-        });
-      },
-
-      getColHeaders: function() {
-        return ["Date", "Time", "Event capacity", "Guest count booked", "Capacity utilisation(%)"];
+        return `capacity_detail_${experienceName}_${range}`
       },
 
       getData: function() {
@@ -114,24 +82,3 @@
     }
   }
 </script>
-
-<style src="../../../node_modules/handsontable-pro/dist/handsontable.full.css"></style>
-<style>
-    #hot-display-license-info {
-        display: none;
-    }
-</style>
-
-<style scoped>
-    .hot-preview {
-        margin-top: 25px;
-    }
-
-    .export {
-        height: 50px;
-    }
-
-    .export .el-button {
-        float: right;
-    }
-</style>
