@@ -301,7 +301,12 @@
               [1, '#22793D']
             ],
             min: 0,
-            max: 100
+            max: 100,
+            labels: {
+              formatter: function() {
+                return this.value + " %";
+              }
+            }
           },
 
           legend: {
