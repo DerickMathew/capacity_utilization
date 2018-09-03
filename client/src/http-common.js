@@ -1,8 +1,5 @@
 import axios from 'axios';
 
-export const HTTP = axios.create({
-  baseURL: 'http://xola.local/',
-  headers: {
-    Authorization: 'Bearer {token}'
-  }
+export const XOLA_API = axios.create({
+  baseURL: process.env.XOLA_API_URL
 });

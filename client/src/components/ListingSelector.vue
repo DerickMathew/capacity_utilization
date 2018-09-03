@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import {HTTP} from '../http-common';
+  import {XOLA_API} from '../http-common';
 
   export default {
     name: 'ListingSelector',
@@ -33,7 +33,8 @@
 
     created() {
       let self = this;
-      HTTP.get('api/experiences?seller=' + this.sellerId)
+      let params = {seller: this.sellerId};
+      XOLA_API.get('api/experiences', {params: params})
         .then(response => {
           self.experiences = self.parseExperiences(response.data.data);
           self.selectedExperience = self.experiences[0].id

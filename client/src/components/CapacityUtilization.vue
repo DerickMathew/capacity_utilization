@@ -33,7 +33,7 @@
   import ListingSelector from './ListingSelector'
   import DetailedReport from "./detailed/DetailedReport";
   import SummarisedReport from "./summarised/SummarisedReport";
-  import {HTTP} from '../http-common';
+  import {XOLA_API} from '../http-common';
 
   export default {
     name: "CapacityUtilization",
@@ -106,7 +106,7 @@
             allowPastSlots: true
           };
 
-          HTTP.get('api/capacity', {params: params})
+          XOLA_API.get('api/capacity', {params: params})
             .then(response => {
               self.capacities = Object.values(response.data)[0];
             });

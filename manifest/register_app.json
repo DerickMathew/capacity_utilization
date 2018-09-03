@@ -1,0 +1,19 @@
+{
+  "name": "Capacity Utilization",
+  "description": "Data visualization app for event's capacity utilization",
+  "prerequisites": [
+    "Must have Xola account"
+  ],
+  "permissions": [
+    "ROLE_RESERVATION"
+  ],
+  "webhooks": {
+    "url": "http://localhost:8011"
+  },
+  "config": [],
+  "ui" : {
+    "menu" : "Reports//Capacity",
+    "label" : "Capacity Utilization",
+    "url" : "http://localhost:8011"
+  }
+}
